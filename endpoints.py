@@ -1,24 +1,24 @@
 from flask import make_response, render_template, request
-from flask import Flask
+from flask import Flask, Blueprint
 
-
+templates = Blueprint('templates', __name__, template_folder='templates')
 app = Flask(__name__)
+app.register_blueprint(templates)
 
 
-@app.route("/", method=["GET"])
+@app.route("/", methods=["GET"])
 def base_route():
-    file = open("template.html", "r")
-    data = file.read()
-    file.close()
-    # TODO make query and pass it to render template
-    res = render_template(data)
+    res = render_template("template.html")
     response = make_response(res)
     response.headers["Content-Type"] = "text/html"
     return response
 
 
-@app.route("/books", method=["GET"])
+@app.route("/books", methods=["GET"])
 def get_books_from_author():
-    request.args.get("autor")
-    pass
+
+    author = request.args.get("author")
+    print(f"author is: {author}")
+
+    return "OK"
 

@@ -30,9 +30,12 @@
         const author = document.getElementById("input_text").value;
         document.getElementById("input_text").value = "";
         if (author === "" || !author) {return;}
-        $.post(`/books?author=${author}`,{}, (response,status) => {
+        $.get(`/books?author=${author}`, (response,status) => {
             // TODO: do something
         });
+
+        //$.post(`/books?author=${author}`,{}, (response,status) => {
+        //});
 
     }
 
