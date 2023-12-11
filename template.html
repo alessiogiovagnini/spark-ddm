@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+    <style>
+
+    </style>
+
+</head>
+
+<body>
+
+<label for="input_text">Search:</label>
+<input type="text" id="input_text">
+
+ <button type="button" id="books">Find Books from authors</button>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+
+<script>
+
+
+    document.getElementById("books").addEventListener("click", get_books_from_author);
+
+    function get_books_from_author() {
+        const author = document.getElementById("input_text").value;
+        document.getElementById("input_text").value = "";
+        if (author === "" || !author) {return;}
+        $.post(`/books?author=${author}`,{}, (response,status) => {
+            // TODO: do something
+        });
+
+    }
+
+
+</script>
+
+
+</body>
+
+
+</html>
