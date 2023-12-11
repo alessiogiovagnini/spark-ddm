@@ -7,4 +7,4 @@ assignment for data design and modelling on spark
 2. ```shell 
     source .venv/bin/activate```
 3. ```shell
-    pip install pyspark```
+    pip install -r requirement.txt```
