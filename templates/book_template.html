@@ -19,6 +19,7 @@
             <th>Description</th>
             <th>Authors</th>
             <th>Info</th>
+            <th>Link to reviews</th>
         </tr>
         {% for row in rows %}
         <tr>
@@ -26,6 +27,7 @@
             <td>{{ row.description }}</td>
             <td>{{ row.authors }}</td>
             <td>{{ row.infoLink }}</td>
+            <td><input type="button" value="Go to review" onclick="open_review('{{ row.Title }}');" /></td>
         </tr>
 
         {% endfor %}
@@ -34,7 +36,9 @@
 
 <script>
 
-
+    function open_review(book_title) {
+        window.open(`/reviews?title=${book_title}`);
+    }
 </script>
 
 </body>

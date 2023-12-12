@@ -54,9 +54,9 @@
     function get_reviews_from_book() {
         const book = document.getElementById("input_text").value;
         reset_input();
-        if (book === "" || !author) {return;}
+        if (book === "" || !book) {return;}
 
-        // TODO
+        open_page(`/reviews?title=book`);
     }
 
 
