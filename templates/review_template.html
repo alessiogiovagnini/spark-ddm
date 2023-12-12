@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+
+    </style>
+
+</head>
+
+<body>
+
+<div>
+
+    <h2>Reviews of {{ title }}</h2>
+    <table id="main-table">
+        <tr>
+            <th>Summary</th>
+            <th>Score</th>
+            <th>Helpfulness</th>
+            <th>Review</th>
+        </tr>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row["review/summary"] }}</td>
+            <td>{{ row["review/score"] }}</td>
+            <td>{{ row["review/helpfulness"] }}</td>
+            <td>{{ row["review/text"] }}</td>
+        </tr>
+
+        {% endfor %}
+    </table>
+</div>
+
+<script>
+
+
+</script>
+
+</body>

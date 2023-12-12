@@ -32,5 +32,15 @@ def get_book_info(book: str) -> list[Row]:
     return res
 
 
+def get_book_reviews(book_title: str) -> list[Row]:
+    df: pyspark.sql.DataFrame = spark.read.option("header", True).csv(review_path)
+    columns = [df["review/helpfulness"], df["review/score"], df["review/summary"], df["review/text"]]
+
+    res = df.select(columns).filter(df.Title == book_title).collect()
+
+    return res
+
+
+
 
 

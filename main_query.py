@@ -10,7 +10,7 @@ spark = SparkSession.builder \
         .getOrCreate()
 
 
-if __name__ == '__main__':
+def example():
     path: str = "books_data.csv"
     df: pyspark.sql.DataFrame = spark.read.option("header", True).csv(path)
 
@@ -21,5 +21,19 @@ if __name__ == '__main__':
         print(i)
 
 
+def example2():
+    # join dataframes
+    books_path: str = "books_data.csv"
+    reviews_path: str = "Books_rating.csv"
+
+    df: pyspark.sql.DataFrame = spark.read.option("header", True).csv(books_path)
+    df2: pyspark.sql.DataFrame = spark.read.option("header", True).csv(reviews_path)
+    pass
+
+
+if __name__ == '__main__':
+
+
+    example2()
 
 
