@@ -12,14 +12,14 @@ spark = SparkSession.builder \
 def example():
     # example of spark query
 
-    path: str = "./books_data.csv"
+    path: str = "../books_data.csv"
     df = spark.read.option("header", True).csv(path)
 
     df.show()
 
 
 def get_book_info(book: str):
-    path: str = "./books_data.csv"
+    path: str = "../books_data.csv"
     pass
 
 

@@ -1,4 +1,4 @@
-from endpoints import app
+from src.endpoints import app
 
 
 if __name__ == '__main__':
