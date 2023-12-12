@@ -13,7 +13,8 @@
 <label for="input_text">Search:</label>
 <input type="text" id="input_text">
 
- <button type="button" id="books">Find Books from authors</button>
+<button type="button" id="books">Find Books from authors</button>
+<button type="button" id="info">Find info on books</button>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -24,6 +25,7 @@
 
 
     document.getElementById("books").addEventListener("click", get_books_from_author);
+    document.getElementById("info").addEventListener("click", get_info_on_book);
 
     function open_page(link) {
         window.open(link);
@@ -31,6 +33,14 @@
 
     function reset_input() {
         document.getElementById("input_text").value = "";
+    }
+
+    function get_info_on_book() {
+        const title = document.getElementById("input_text").value;
+        reset_input();
+        if (title === "" || !title) {return;}
+
+        open_page(`/info?title=${title}`)
     }
 
     function get_books_from_author() {

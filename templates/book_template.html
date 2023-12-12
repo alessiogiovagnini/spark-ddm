@@ -10,7 +10,27 @@
 
 <body>
 
-// TODO table with jinja2
+<div>
+
+    <h2>Information</h2>
+    <table id="main-table">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Authors</th>
+            <th>Info</th>
+        </tr>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row.Title}}</td>
+            <td>{{ row.description }}</td>
+            <td>{{ row.authors }}</td>
+            <td>{{ row.infoLink }}</td>
+        </tr>
+
+        {% endfor %}
+    </table>
+</div>
 
 <script>
 
