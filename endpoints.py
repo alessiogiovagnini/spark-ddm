@@ -16,9 +16,16 @@ def base_route():
 
 @app.route("/books", methods=["GET"])
 def get_books_from_author():
-
     author = request.args.get("author")
     print(f"author is: {author}")
+    # TODO: render the template
+    return "OK"
 
+
+@app.route("/reviews", methods=["GET"])
+def get_reviews_from_author():
+    book = request.args.get("book")
+    print(f"book is: {book}")
+    # TODO: render the template
     return "OK"
 

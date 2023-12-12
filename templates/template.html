@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 
@@ -26,17 +25,28 @@
 
     document.getElementById("books").addEventListener("click", get_books_from_author);
 
+    function open_page(link) {
+        window.open(link);
+    }
+
+    function reset_input() {
+        document.getElementById("input_text").value = "";
+    }
+
     function get_books_from_author() {
         const author = document.getElementById("input_text").value;
-        document.getElementById("input_text").value = "";
+        reset_input();
         if (author === "" || !author) {return;}
-        $.get(`/books?author=${author}`, (response,status) => {
-            // TODO: do something
-        });
 
-        //$.post(`/books?author=${author}`,{}, (response,status) => {
-        //});
+        open_page(`/books?author=${author}`)
+    }
 
+    function get_reviews_from_book() {
+        const book = document.getElementById("input_text").value;
+        reset_input();
+        if (book === "" || !author) {return;}
+
+        // TODO
     }
 
 
