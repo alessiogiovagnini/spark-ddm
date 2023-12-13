@@ -3,7 +3,7 @@ import csv
 import pyspark.context
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, explode
+from pyspark.sql.functions import col, explode, avg
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 
 
@@ -87,8 +87,7 @@ def join_example():
 def average_review():
 
     df2: pyspark.sql.DataFrame = read_review_df()
-    df2.groupby("Title").avg("review/score").show()
-    # TODO: select some columns and maybe sort
+    df2.groupby("Title").avg("review/score").sort(avg("review/score"), ascending=False).show()
     pass
 
 
@@ -103,7 +102,7 @@ def example3():
 if __name__ == '__main__':
     # info_on_data()
     # join_example()
-    average_review()
+    # average_review()
     pass
 
 
