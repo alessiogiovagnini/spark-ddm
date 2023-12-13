@@ -51,14 +51,6 @@
         open_page(`/books?author=${author}`)
     }
 
-    function get_reviews_from_book() {
-        const book = document.getElementById("input_text").value;
-        reset_input();
-        if (book === "" || !book) {return;}
-
-        open_page(`/reviews?title=book`);
-    }
-
 
 </script>
 

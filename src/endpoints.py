@@ -1,7 +1,7 @@
 from flask import make_response, render_template, request
 from flask import Flask
 import flask
-from src.query import get_book_info, get_book_reviews
+from src.query import get_book_info, get_book_reviews, get_books_from_author
 
 app = Flask(__name__, template_folder="../templates")
 
@@ -24,14 +24,21 @@ def base_route():
     return response
 
 
+# get all books info that are written by the same author
 @app.route("/books", methods=["GET"])
-def get_books_from_author():
+def get_books_from_author_api():
     author = request.args.get("author")
-    print(f"author is: {author}")
-    # TODO: render the template
-    return "OK"
+    if not author:
+        return flask.redirect("/400")
+    info = get_books_from_author(author=author)
+
+    res = render_template("book_template.html", rows=info)
+    response = make_response(res)
+    response.headers["Content-Type"] = "text/html"
+    return response
 
 
+# get all reviews from a book title
 @app.route("/reviews", methods=["GET"])
 def get_reviews_from_author():
     book_title = request.args.get("title")
@@ -45,6 +52,7 @@ def get_reviews_from_author():
     return response
 
 
+# get information on all books with this title
 @app.route("/info", methods=["GET"])
 def get_books_info():
     book_title = request.args.get("title")
