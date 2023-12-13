@@ -71,15 +71,20 @@ def join_example():
 
 
 def average_review():
-    df2: pyspark.sql.DataFrame = read_review_df()
-    df2.groupby("Title").avg("review/score").sort(avg("review/score"), ascending=False).show()
-    pass
+    df: pyspark.sql.DataFrame = read_review_df()
+    df.groupby("Title").avg("review/score").sort(avg("review/score"), ascending=False).show()
+
+
+def count_publisher():
+    df: pyspark.sql.DataFrame = read_books_df()
+    df.filter(col("publisher").isNotNull()).groupby("publisher").count().sort("count", ascending=False).show()
 
 
 if __name__ == '__main__':
     # info_on_data()
-    # join_example()
+    # join_example()  # TODO
     # average_review()
+    # count_publisher()
     pass
 
 
