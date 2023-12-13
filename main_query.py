@@ -12,6 +12,21 @@ spark = SparkSession.builder \
         .getOrCreate()
 
 
+# get info on data
+def info_on_data():
+    books_path: str = "books_data.csv"
+    reviews_path: str = "Books_rating.csv"
+    df_book: pyspark.sql.DataFrame = spark.read.option("header", True).csv(books_path)
+    df_review: pyspark.sql.DataFrame = spark.read.option("header", True).csv(reviews_path)
+
+    print("book schema:")
+    df_book.printSchema()
+    df_book.show()
+    print("review schema:")
+    df_review.printSchema()
+    df_review.show()
+
+
 def example():
     path: str = "books_data.csv"
     df: pyspark.sql.DataFrame = spark.read.option("header", True).csv(path)
@@ -42,34 +57,7 @@ def example3():
 
 
 if __name__ == '__main__':
-
-    example3()
-    # data = []
-    # with open("books_data.csv") as file_obj:
-    #
-    #     reader_obj = csv.reader(file_obj)
-    #     for row in reader_obj:
-    #
-    #         if type(row[2]) is str and row:
-    #             arr = row[2].strip('][').split(', ')
-    #             # print("--------")
-    #             # print(row[2])
-    #             # print(arr)
-    #             lines = []
-    #             for i, v in enumerate(row):
-    #                 if i == 2:
-    #                     lines.insert(i, arr)
-    #                 else:
-    #                     lines.insert(i,row[i])
-    #             data.append(lines)
-    #         else:
-    #             print(type(row[2]))
-    #             data.append(row)
-
-    # with open("books_data_new.csv", "w") as csv_file:
-    #     writer = csv.writer(csv_file)
-    #     for d in data:
-    #         print(type(d))
-    #         writer.writerow(d)
+    # info_on_data()
+    pass
 
 
