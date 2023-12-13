@@ -60,24 +60,10 @@ def info_on_data():
     df_review.show()
 
 
-def example():
-    path: str = "books_data.csv"
-    df: pyspark.sql.DataFrame = spark.read.option("header", True).csv(path)
-
-    columns = [df["Title"], df["description"], df["authors"], df["infoLink"]]
-    res = df.select(columns).filter(col("Title").contains("Dr. Seuss")).collect()
-
-    for i in res:
-        print(i)
-
-
 def join_example():
     # join dataframes
-    books_path: str = "books_data.csv"
-    reviews_path: str = "Books_rating.csv"
-
-    df: pyspark.sql.DataFrame = spark.read.option("header", True).csv(books_path)
-    df2: pyspark.sql.DataFrame = spark.read.option("header", True).csv(reviews_path)
+    df: pyspark.sql.DataFrame = read_books_df()
+    df2: pyspark.sql.DataFrame = read_review_df()
 
     df.join(df2, "Title").show()
     # TODO: after joining the tables, need to filter
@@ -85,18 +71,9 @@ def join_example():
 
 
 def average_review():
-
     df2: pyspark.sql.DataFrame = read_review_df()
     df2.groupby("Title").avg("review/score").sort(avg("review/score"), ascending=False).show()
     pass
-
-
-def example3():
-    books_path: str = "books_data.csv"
-    df: pyspark.sql.DataFrame = spark.read.options(header=True, inferSchema='True').csv(books_path)
-
-    columns = [df["Title"], df["description"], df["authors"], df["infoLink"]]
-    df.select(columns).filter(col("authors").contains("Julie")).show()
 
 
 if __name__ == '__main__':
