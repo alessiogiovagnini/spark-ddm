@@ -109,16 +109,34 @@ def get_most_reviewed_book():
      .sort("count", ascending=False).show())
 
 
-def get_publisher_with_most_reviewed_book():
-    pass
+def get_publisher_with_best_reviewed_book():
+    df: pyspark.sql.DataFrame = read_review_df()
+    df2: pyspark.sql.DataFrame = read_books_df()
+
+    book_pub_title = df2.select(["Title", "publisher"]).filter(col("Title").isNotNull() & col("publisher").isNotNull())
+    average_rev = df.groupby("Title").avg("review/score").filter(col("avg(review/score)") <= 5)
+    (book_pub_title.join(other=average_rev, on="Title")
+     .groupby("publisher")
+     .avg("avg(review/score)")
+     .select("publisher", col("avg(avg(review/score))").alias("average-score"))
+     .show()
+     )
+
+
+def users_that_posted_at_least_one_review():
+    df: pyspark.sql.DataFrame = read_review_df()
+    total: int = df.filter(col("User_id").isNotNull()).dropDuplicates(["User_id"]).count()
+    print(f"Total number of users that wrote at least 1 review: {total}")
 
 
 if __name__ == '__main__':
-    # info_on_data() # get info
+    # info_on_data()  # get info
 
-    # average_review() # not very complicated
-    # count_publisher() # not very complicated
-    # get_cheap_price() # not very complicated
-    # get_reviewer_with_most_reviews() # OK
-    # get_most_reviewed_book() # OK
+    # average_review()  # not very complicated
+    # count_publisher()  # not very complicated
+    # get_cheap_price()  # not very complicated
+    # users_that_posted_at_least_one_review()  # kinda simple but is different from other
+    # get_reviewer_with_most_reviews()  # OK
+    # get_most_reviewed_book()  # OK
+    # get_publisher_with_best_reviewed_book()  # OK
     pass
