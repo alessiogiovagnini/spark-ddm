@@ -8,12 +8,12 @@ app = Flask(__name__, template_folder="../templates")
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return "Not found"
+    return f"Not found: {e}"
 
 
 @app.errorhandler(400)
 def bad_request(e):
-    return "Bad request"
+    return f"Bad request: {e}"
 
 
 @app.route("/", methods=["GET"])
