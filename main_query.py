@@ -57,27 +57,70 @@ def info_on_data():
 
 
 def average_review():
-    df: pyspark.sql.DataFrame = read_review_df()
-    return (df.groupby("Title")
-            .avg("review/score")
-            .sort(avg("review/score"), ascending=False)
-            .filter(col("avg(review/score)") <= 5))  # there are some exception where the score is more than 5,
-    # so they are excluded
+    read_review_df().createOrReplaceTempView("REVIEWS")
+    (spark.sql("""
+    SELECT
+        *
+    FROM REVIEWS
+    WHERE Title IS NOT NULL
+    """)
+     .withColumnsRenamed({"review/score": "score"})
+     ).createOrReplaceTempView("SCORE")
+    # it is necessary to rename the column because it has a slash and SQL cannot properly read it
+    spark.sql("""
+     SELECT
+        Title,
+        AVG(score)
+     FROM SCORE
+     WHERE score IS NOT NULL
+     GROUP BY Title
+     """).show()
+
+    # query with function
+    # df: pyspark.sql.DataFrame = read_review_df()
+    # (df.groupby("Title")
+    #  .avg("review/score")
+    #  .sort(avg("review/score"), ascending=False)
+    #  .filter(col("avg(review/score)") <= 5)).show()
+    # there are some exception where the score is more than 5, so they are excluded
 
 
-def count_publisher():
-    df: pyspark.sql.DataFrame = read_books_df()
-    return (df.filter(col("publisher").isNotNull())
-            .groupby("publisher")
-            .count()
-            .sort("count", ascending=False))
+def books_by_publisher():
+    read_books_df().createOrReplaceTempView("BOOKS")
+    spark.sql("""
+    SELECT 
+        publisher,
+        COUNT(*) AS publishedBooks
+    FROM BOOKS 
+    WHERE publisher IS NOT NULL
+    GROUP BY publisher
+    ORDER BY publishedBooks DESC
+    """).show()
+
+    # query with function
+    # df: pyspark.sql.DataFrame = read_books_df()
+    # (df.filter(col("publisher").isNotNull())
+    #  .groupby("publisher")
+    #  .count()
+    #  .sort("count", ascending=False)).show()
 
 
 def get_cheap_price():
-    df: pyspark.sql.DataFrame = read_review_df()
-    return (df.filter(col("Price").isNotNull())
-            .groupby("Title")
-            .avg("Price").sort("avg(Price)"))
+    read_review_df().createOrReplaceTempView("BOOKS")
+    spark.sql("""
+    SELECT
+        TITLE,
+        AVG(Price) as price
+    FROM BOOKS
+    WHERE Price IS NOT NULL
+    GROUP BY Title
+    ORDER BY price ASC
+    """).show()
+
+    # df: pyspark.sql.DataFrame = read_review_df()
+    # return (df.filter(col("Price").isNotNull())
+    #         .groupby("Title")
+    #         .avg("Price").sort("avg(Price)"))
 
 
 def get_reviewer_with_most_reviews():
@@ -133,10 +176,10 @@ def book_sorted_by_date(older_first=False):
     return (df2.filter(col("publishedDate").isNotNull() & col("Title").isNotNull())
             .select(["Title", "publishedDate"])
             .withColumn("Date", F.coalesce(
-                F.to_date(c, "yyyy-MM-dd"),
-                F.to_date(c, "yyyy-MM"),
-                F.lit("None")
-            ))
+        F.to_date(c, "yyyy-MM-dd"),
+        F.to_date(c, "yyyy-MM"),
+        F.lit("None")
+    ))
             .filter(~col("Date").contains("None"))
             .select(["Title", "Date"])
             .sort("Date", ascending=older_first)
@@ -146,10 +189,11 @@ def book_sorted_by_date(older_first=False):
 if __name__ == '__main__':
     # info_on_data()  # get info
 
-    # average_review().show()  # not very complicated
-    # count_publisher().show()  # not very complicated
-    # get_cheap_price().show()  # not very complicated
-    # users_that_posted_at_least_one_review()  # kinda simple but is different from other
+    # average_review()  # IN SQL
+    # books_by_publisher()  # IN SQL
+    get_cheap_price()  # IN SQL
+
+    # users_that_posted_at_least_one_review()  # OK
     # get_reviewer_with_most_reviews().show()  # OK
     # get_most_reviewed_book().show()  # OK
     # get_publisher_with_best_reviewed_book().show()  # OK
