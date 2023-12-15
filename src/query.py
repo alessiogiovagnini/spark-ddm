@@ -1,7 +1,6 @@
 import pyspark.context
-from pyspark import SparkContext
 from pyspark.sql import SparkSession, Row
-from pyspark.sql.functions import col, explode
+from pyspark.sql.functions import col
 
 
 book_path: str = "books_data.csv"
@@ -46,8 +45,3 @@ def get_books_from_author(author: str) -> list[Row]:
     columns = [df["Title"], df["description"], df["authors"], df["infoLink"]]
     res = df.select(columns).filter(col("authors").contains(author)).collect()
     return res
-
-
-
-
-

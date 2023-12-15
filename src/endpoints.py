@@ -65,5 +65,3 @@ def get_books_info():
     response = make_response(res)
     response.headers["Content-Type"] = "text/html"
     return response
-
-
