@@ -66,7 +66,8 @@ def average_review():
     """)
      .withColumnsRenamed({"review/score": "score"})
      ).createOrReplaceTempView("SCORE")
-    # it is necessary to rename the column because it has a slash and SQL cannot properly read it
+    # it is necessary to rename the column because
+    # it has a slash and SQL cannot properly read it
     spark.sql("""
      SELECT
         Title,
@@ -126,16 +127,15 @@ def get_cheap_price():
 def get_reviewer_with_most_reviews():
     df: pyspark.sql.DataFrame = read_review_df()
     df2: pyspark.sql.DataFrame = read_review_df()
-
     dist: pyspark.sql.DataFrame = df2.dropDuplicates(["User_id", "profileName"])
 
     return (df.filter(col("User_id").isNotNull())
             .groupby("User_id")
             .count()
-            .sort("count", ascending=False)
-            .limit(20)
             .join(other=dist, on="User_id", how="inner")
-            .select(["profileName", "count"]))
+            .select(["profileName", "count"])
+            .sort("count", ascending=False)
+            )
 
 
 def get_most_reviewed_book():
@@ -154,11 +154,15 @@ def get_publisher_with_best_reviewed_book():
     df2: pyspark.sql.DataFrame = read_books_df()
 
     book_pub_title = df2.select(["Title", "publisher"]).filter(col("Title").isNotNull() & col("publisher").isNotNull())
+    book_num = book_pub_title.groupby("publisher").count().filter(col("count") >= 10)
     average_rev = df.groupby("Title").avg("review/score").filter(col("avg(review/score)") <= 5)
     return (book_pub_title.join(other=average_rev, on="Title")
             .groupby("publisher")
             .avg("avg(review/score)")
             .select("publisher", col("avg(avg(review/score))").alias("average-score"))
+            .join(other=book_num, on="publisher", how="inner")
+            .select(["publisher", "average-score"])
+            .sort("average-score", ascending=False)
             )
 
 
@@ -187,15 +191,17 @@ def book_sorted_by_date(older_first=False):
 
 
 if __name__ == '__main__':
+    # uncomment the following lines to choose which query to run!
+
     # info_on_data()  # get info
 
     # average_review()  # IN SQL
     # books_by_publisher()  # IN SQL
-    get_cheap_price()  # IN SQL
+    # get_cheap_price()  # IN SQL
 
-    # users_that_posted_at_least_one_review()  # OK
-    # get_reviewer_with_most_reviews().show()  # OK
-    # get_most_reviewed_book().show()  # OK
-    # get_publisher_with_best_reviewed_book().show()  # OK
-    # book_sorted_by_date().show()  # OK
+    # users_that_posted_at_least_one_review()  # dataframe
+    # get_reviewer_with_most_reviews().show()  # dataframe
+    # get_most_reviewed_book().show()  # dataframe
+    # get_publisher_with_best_reviewed_book().show()  # dataframe
+    # book_sorted_by_date().show()  # dataframe
     pass
