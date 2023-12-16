@@ -27,6 +27,20 @@
             background-color: #144a50;
             color: white;
         }
+        .button {
+          background-color: #04AA6D; /* Green */
+          border: none;
+          color: white;
+          padding: 20px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+
+        .button-style {border-radius: 12px;}
     </style>
 
 </head>
@@ -38,19 +52,22 @@
     <h2>Books information:</h2>
     <table id="main-table" class="normal-table">
         <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Authors</th>
-            <th>Info</th>
-            <th>Link to reviews</th>
+            <th style="width: 20%">Title</th>
+            <th style="width: 40%">Description</th>
+            <th style="width: 20%">Authors</th>
+            <th style="width: 10%">Info</th>
+            <th style="width: 10%">Link to reviews</th>
         </tr>
         {% for row in rows %}
         <tr>
             <td>{{ row.Title}}</td>
             <td>{{ row.description }}</td>
             <td>{{ row.authors }}</td>
-            <td>{{ row.infoLink }}</td>
-            <td><input type="button" value="Go to review" onclick="open_review('{{ row.Title }}');" /></td>
+            <td>
+                <a href="{{ row.infoLink }}">Info</a>
+
+            </td>
+            <td><input class="button button-style" type="button" value="Go to review" onclick="open_review('{{ row.Title }}');" /></td>
         </tr>
 
         {% endfor %}

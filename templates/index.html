@@ -3,18 +3,71 @@
 <head>
 
     <style>
+        body {
+          width: 80%;
+          max-width: 1024px;
+          margin: 0 auto;
+        }
+        .container-padding50 {
+          position: relative;
+          padding-top: 50px;
+          height: 80px;
+        }
 
+        .container-textinput {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          text-align: center;
+          width: 80%;
+          padding: 20px;
+          font-size: 16px;
+          font-family: Helvetica, sans-serif;
+          border: none;
+          border-bottom: 2px solid black;
+        }
+
+        .vertical-center {
+          margin: 0;
+          position: absolute;
+          top: 10%;
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+        }
+
+        .button {
+          background-color: #04AA6D; /* Green */
+          border: none;
+          color: white;
+          padding: 20px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+
+        .button-style {border-radius: 12px;}
+
+        .horizontal-center {
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 
 </head>
 
 <body>
 
-<label for="input_text">Search:</label>
-<input type="text" id="input_text">
+<div class="container container-padding">
+    <input type="text" id="input_text" class="js-userinput container-textinput" placeholder="Type here to search!">
+</div>
+<div class="container vertical-center">
+        <button class="button button-style" type="button" id="books">Find Books from authors</button>
+        <button class="button button-style" type="button" id="info">Find info on books</button>
+    </div>
 
-<button type="button" id="books">Find Books from authors</button>
-<button type="button" id="info">Find info on books</button>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
