@@ -49,7 +49,7 @@ def get_books_from_author_api():
 
 # get all reviews from a book title
 @app.route("/reviews", methods=["GET"])
-def get_reviews_from_author():
+def get_reviews():
     book_title = request.args.get("title")
     limit = to_int(request.args.get("limit"))
     if not book_title:
