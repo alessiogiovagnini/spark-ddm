@@ -110,7 +110,7 @@ def get_cheap_price():
     read_review_df().createOrReplaceTempView("BOOKS")
     spark.sql("""
     SELECT
-        TITLE,
+        Title,
         AVG(Price) as price
     FROM BOOKS
     WHERE Price IS NOT NULL
